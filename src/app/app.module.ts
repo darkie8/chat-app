@@ -1,6 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeIN from '@angular/common/locales/bn-IN';
+import localeINExtra from '@angular/common/locales/extra/bn-IN';
+registerLocaleData(localeIN, 'bn-IN', localeINExtra);
 import { AppComponent } from './app.component';
 
 // routing
@@ -29,7 +32,7 @@ import { LoginComponent } from './user/login/login.component';
     { path: '', component: LoginComponent },
     { path: '*', component: LoginComponent }])
   ],
-  providers: [],
+  providers: [ { provide: LOCALE_ID, useValue: 'bn-IN' } ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
