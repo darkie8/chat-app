@@ -12,29 +12,40 @@ import 'rxjs/add/operator/toPromise';
   providedIn: 'root'
 })
 export class ChatAppService {
-  private url = 'https://chatapi.edwisor.com';
+  private ইউয়ারেল = 'https://chatapi.edwisor.com';
   constructor(private httpCall: HttpClient) { }
 
+  public উপলব্ধ_করা_ব্যবহারকারীর_তথ্য_লকাল_স্টরেজে = () => {
+
+    return JSON.parse(localStorage.getItem('ব্যবহারকারীর_তথ্য'));
+
+  } // শেষ উপলব্ধ_করা_ব্যবহারকারীর_তথ্য_লকাল_স্টরেজে
+  public ধার্য_করা_ব্যবহারকারীর_তথ্য_লকাল_স্টরেজে = (তথ্য) => {
+
+    localStorage.setItem('ব্যবহারকারীর_তথ্য', JSON.stringify(তথ্য));
+
+
+  }
   /**
    * সাইন_আপ_প্রক্রিয়া
    */
-  public সাইন_আপ_প্রক্রিয়া(data): Observable<any> {
-    const params = new HttpParams()
-      .set('firstName', data.নাম)
-      .set('lastName', data.পদবী)
-      .set('mobileNumber', data.মোবাইল)
-      .set('email', data.ইমেইল)
-      .set('password', data.পাসওয়ারড)
-      .set('apiKey', data.এপিআইচাবি);
-      return this.httpCall.post(`${this.url}/api/v1/users/signup`, params);
+  public সাইন_আপ_প্রক্রিয়া(তথ্য): Observable<any> {
+    const প্যারামস = new HttpParams()
+      .set('firstName', তথ্য.নাম)
+      .set('lastName', তথ্য.পদবী)
+      .set('mobileNumber', তথ্য.মোবাইল)
+      .set('email', তথ্য.ইমেইল)
+      .set('password', তথ্য.পাসওয়ারড)
+      .set('apiKey', তথ্য.এপিআইচাবি);
+    return this.httpCall.post(`${this.ইউয়ারেল}/api/v1/users/signup`, প্যারামস);
   }
   /**
    * loginMethod
    */
-  public loginMethod(obj): Observable<any> {
-    const params1 = new HttpParams()
-    .set('email', obj.email)
-    .set('password', obj.password);
-    return this.httpCall.post(`${this.url}/api/v1/users/login`, params1);
+  public লগ_ইন_প্রক্রিয়া(তথ্য): Observable<any> {
+    const প্যারামস১ = new HttpParams()
+      .set('email', তথ্য.ইমেইল)
+      .set('password', তথ্য.পাসওয়ারড);
+    return this.httpCall.post(`${this.ইউয়ারেল}/api/v1/users/login`, প্যারামস১);
   }
 }

@@ -89,7 +89,7 @@ export class SgnUpComponent implements OnInit {
           }
 
         },
-        (ভুল) => {
+        (অনুসঙ্গতি) => {
           this.টোস্টার.error('কিছু অনুসঙ্গতি দেখা গেছে!! ');
         }
 

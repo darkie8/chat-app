@@ -1,9 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { registerLocaleData } from '@angular/common';
-import localeIN from '@angular/common/locales/bn-IN';
-import localeINExtra from '@angular/common/locales/extra/bn-IN';
-registerLocaleData(localeIN, 'bn-IN', localeINExtra);
 import { AppComponent } from './app.component';
 
 // routing

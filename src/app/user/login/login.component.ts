@@ -11,62 +11,64 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class LoginComponent implements OnInit {
   public email: any;
   public password: any;
-  constructor(public logInService: ChatAppService, public router: Router, public toastr: ToastsManager,
-    vcr: ViewContainerRef) {
-    toastr.setRootViewContainerRef(vcr);
+  constructor(public লগইনকৃত্যক: ChatAppService,
+    public রাউটার: Router,
+    private টোস্টার: ToastsManager,
+    ভিসিয়ার: ViewContainerRef) {
+    টোস্টার.setRootViewContainerRef(ভিসিয়ার);
   }
 
   ngOnInit() {
   }
   public goToSignUp: any = () => {
 
-    this.router.navigate(['/sign-up']);
+    this.রাউটার.navigate(['/signUp']);
 
   } // end goToSignUp
 
   public signinFunction: any = () => {
 
     if (!this.email) {
-      this.toastr.warning('enter email');
-
+      this.টোস্টার.warning('ইমেইল অন্তর্ভুক্ত করুন');
 
     } else if (!this.password) {
-
-      this.toastr.warning('enter password');
+      this.টোস্টার.warning('পাসওয়ারড অন্তর্ভুক্ত করুন');
 
 
     } else {
 
-      let data = {
-        email: this.email,
-        password: this.password
+      const তথ্য = {
+        ইমেইল: this.email,
+        পাসওয়ারড: this.password
       };
 
-      this.logInService.সাইন_আপ_প্রক্রিয়া(data)
-        .subscribe((apiResponse) => {
+      this.লগইনকৃত্যক.লগ_ইন_প্রক্রিয়া(তথ্য)
+        .subscribe((এপিয়াইপ্রতিক্রিয়া) => {
 
-          if (apiResponse.status === 200) {
-            console.log(apiResponse);
+          if (এপিয়াইপ্রতিক্রিয়া.status === 200) {
+            console.log(এপিয়াইপ্রতিক্রিয়া);
+            this.টোস্টার.success('সাইন ইন সাফল্য লাভ করেছে!');
+            Cookie.set('authtoken', এপিয়াইপ্রতিক্রিয়া.data.authToken);
 
-            Cookie.set('authtoken', apiResponse.data.authToken);
+            Cookie.set('receiverId', এপিয়াইপ্রতিক্রিয়া.data.userDetails.userId);
 
-            Cookie.set('receiverId', apiResponse.data.userDetails.userId);
+            Cookie.set('receiverName', এপিয়াইপ্রতিক্রিয়া.data.userDetails.firstName + ' ' + এপিয়াইপ্রতিক্রিয়া.data.userDetails.lastName);
 
-            Cookie.set('receiverName', apiResponse.data.userDetails.firstName + ' ' + apiResponse.data.userDetails.lastName);
+            this.লগইনকৃত্যক.ধার্য_করা_ব্যবহারকারীর_তথ্য_লকাল_স্টরেজে(এপিয়াইপ্রতিক্রিয়া.data.userDetails);
 
-           // this.logInService.setUserInfoInLocalStorage(apiResponse.data.userDetails);
+            setTimeout(() => { this.রাউটার.navigate(['/chat']); }, 2000);
 
-            this.router.navigate(['/chat']);
+
 
           } else {
 
-            this.toastr.error(apiResponse.message);
+            this.টোস্টার.error(এপিয়াইপ্রতিক্রিয়া.message);
 
 
           }
 
-        }, (err) => {
-          this.toastr.error('some error occured');
+        }, (অনুসঙ্গতি) => {
+          this.টোস্টার.error('কিছু অনুসঙ্গতি দেখা গেছে!!');
 
         });
 
