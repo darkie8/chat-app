@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/zip';
 import 'rxjs/add/operator/toPromise';
+import { Cookie } from '../../node_modules/ng2-cookies/ng2-cookies';
 
 @Injectable({
   providedIn: 'root'
@@ -48,4 +49,36 @@ export class ChatAppService {
       .set('password', তথ্য.পাসওয়ারড);
     return this.httpCall.post(`${this.ইউয়ারেল}/api/v1/users/login`, প্যারামস১);
   }
+
+  public logout(): Observable<any> {
+
+    const params = new HttpParams()
+      .set('authToken', Cookie.get('authtoken'));
+
+    return this.httpCall.post(`${this.ইউয়ারেল}/api/v1/users/logout`, params);
+
+  } // end logout function
+
+
+
+  private handleError(err: HttpErrorResponse) {
+
+    let errorMessage = '';
+
+    if (err.error instanceof Error) {
+
+      errorMessage = `An error occurred: ${err.error.message}`;
+
+    } else {
+
+      errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+
+    } // end condition *if
+
+    console.error(errorMessage);
+
+    return Observable.throw(errorMessage);
+
+  }  // END handleError
+
 }
