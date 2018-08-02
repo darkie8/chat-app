@@ -26,9 +26,9 @@ import { LoginComponent } from './user/login/login.component';
     ShareModule,
     RouterModule.forRoot([{ path: 'login', component: LoginComponent, pathMatch: 'full' },
     { path: '', component: LoginComponent },
-    { path: '*', component: LoginComponent }])
+    { path: '*', component: LoginComponent }], {useHash: true})
   ],
-  providers: [ { provide: LOCALE_ID, useValue: 'bn-IN' } ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

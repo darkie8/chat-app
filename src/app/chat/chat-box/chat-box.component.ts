@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ToastsManager } from 'ng6-toastr/ng2-toastr';
 import { ChatAppService } from '../../chat-app.service';
 import { SocketChatService } from '../../socket-chat.service';
+import { chatMessage } from './chatInterface';
 @Component({
   selector: 'app-chat-box',
   templateUrl: './chat-box.component.html',
@@ -11,7 +12,9 @@ import { SocketChatService } from '../../socket-chat.service';
   providers: [SocketChatService]
 })
 export class ChatBoxComponent implements OnInit {
+  @ViewChild('scrollMe', { read: ElementRef })
 
+  public scrollMe: ElementRef;
   public authToken: any;
   public userInfo: any;
   public receiverId: any;
@@ -30,7 +33,7 @@ export class ChatBoxComponent implements OnInit {
     public SocketService: SocketChatService,
     public router: Router,
     private toastr: ToastsManager,
-    vcr: ViewContainerRef
+    vcr: ViewContainerRef,
   ) {
 
     this.receiverId = Cookie.get('receiverId');
@@ -49,13 +52,22 @@ export class ChatBoxComponent implements OnInit {
     this.authToken = Cookie.get('authtoken');
 
     this.userInfo = this.AppService.উপলব্ধ_করা_ব্যবহারকারীর_তথ্য_লকাল_স্টরেজে();
+    this.receiverId = Cookie.get('receiverId');
 
+    this.receiverName = Cookie.get('receiverName');
+
+    console.log(this.receiverId, this.receiverName);
+
+    if (this.receiverId != null && this.receiverId !== undefined && this.receiverId !== '') {
+      this.userSelectedToChat(this.receiverId, this.receiverName);
+    }
     this.checkStatus();
 
     this.verifyUserConfirmation();
 
     this.getOnlineUserList();
 
+    this.getMessageFromAUser();
 
 
   }
@@ -213,7 +225,7 @@ export class ChatBoxComponent implements OnInit {
 
     if (this.messageText) {
 
-      const chatMsgObject = {
+      const chatMsgObject: chatMessage = {
         senderName: this.userInfo.firstName + ' ' + this.userInfo.lastName,
         senderId: this.userInfo.userId,
         receiverName: Cookie.get('receiverName'),
@@ -289,7 +301,12 @@ export class ChatBoxComponent implements OnInit {
       });
   }
 
-
+  /**
+   * showUsername
+   */
+  public showUsername(name: string) {
+    this.toastr.success(`you are chatting with ${name}`);
+  }
 
 
 
